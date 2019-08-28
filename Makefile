@@ -9,7 +9,7 @@ all: test
 
 .PHONY: build
 build:
-	go build
+	GO111MODULE=on go build
 
 .PHONY: crossbuild
 crossbuild:
@@ -19,11 +19,11 @@ crossbuild:
 
 .PHONY: test
 test:
-	go test -v -parallel=4 ./...
+	GO111MODULE=on go test -v -parallel=4 ./...
 
 .PHONY: dep
-dep: devel-deps
-	dep ensure -v
+dep:
+	GO111MODULE=on go mod download
 
 .PHONY: reviewdog
 reviewdog: devel-deps
@@ -40,4 +40,11 @@ release:
 
 .PHONY: devel-deps
 devel-deps:
-	@./misc/scripts/install-devel-deps.sh
+	@go get -v -u github.com/Songmu/ghch/cmd/ghch
+	@go get -v -u github.com/Songmu/goxz/cmd/goxz
+	@go get -v -u github.com/git-chglog/git-chglog/cmd/git-chglog
+	@go get -v -u golang.org/x/lint/golint
+	@go get -v -u github.com/haya14busa/goverage
+	@go get -v -u github.com/haya14busa/reviewdog/cmd/reviewdog
+	@go get -v -u github.com/motemen/gobump/cmd/gobump
+	@go get -v -u github.com/tcnksm/ghr

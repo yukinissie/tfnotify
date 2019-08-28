@@ -7,14 +7,11 @@ jobs:
   build:
     <<: *defaults
     docker:
-      - image: golang:1.10-stretch
+      - image: golang:1.12-stretch
+        environment:
+          GO111MODULE: "on"
     steps:
       - checkout
-      - run:
-          name: Install dpendency tools and vendor
-          command: |
-            go get -u github.com/golang/dep/cmd/dep
-            dep ensure
       - run:
           name: Run test
           command: |
@@ -27,14 +24,15 @@ jobs:
   lint:
     <<: *defaults
     docker:
-      - image: golang:1.10-stretch
+      - image: golang:1.12-stretch
+        environment:
+          GO111MODULE: "on"
     steps:
       - checkout
       - run:
           name: Install dpendency tools and vendor
           command: |
             make dep
-            dep ensure
       - run:
           name: Run lint
           command: |
